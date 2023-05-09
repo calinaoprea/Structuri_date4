@@ -1,0 +1,3 @@
+/home/calina/Desktop/facultate/DSA/Structuri_date4/cmake-build-debug/CMakeFiles/Structuri_date4.dir
+/home/calina/Desktop/facultate/DSA/Structuri_date4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/calina/Desktop/facultate/DSA/Structuri_date4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
