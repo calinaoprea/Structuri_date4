@@ -45,7 +45,53 @@ bool Set::remove(TElem e) {
     }
     table[pos].deleted = true;
     _size--; // decrement the size
+
+    // Check if the table needs to be rehashed
+    if (_size < capacity / 4) {
+        rehash();
+    }
+
     return true;
+}
+
+bool isPrime(int n) {
+    if (n <= 1) {
+        return false;
+    }
+    if (n <= 3) {
+        return true;
+    }
+    if (n % 2 == 0 || n % 3 == 0) {
+        return false;
+    }
+    for (int i = 5; i * i <= n; i = i + 6) {
+        if (n % i == 0 || n % (i + 2) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Set::rehash() {
+    int new_capacity = 2 * capacity + 1;
+    while (!isPrime(new_capacity)) {
+        new_capacity += 2;
+    }
+    Node* new_table = new Node[new_capacity]; // allocate new table
+    for (int i = 0; i < new_capacity; i++) {
+        new_table[i].info = NULL_TELEM; // set all elements to null
+        new_table[i].deleted = false;
+    }
+    for (int i = 0; i < capacity; i++) { // rehash old elements
+        if (table[i].info != NULL_TELEM && !table[i].deleted) {
+            int pos = findPos(table[i].info, new_table, new_capacity);
+            new_table[pos].info = table[i].info;
+            new_table[pos].deleted = false;
+        }
+    }
+    capacity = new_capacity;
+    delete[] table; // deallocate old table
+    table = new_table; // update pointer
 }
 
 bool Set::search(TElem elem) const {
@@ -77,13 +123,13 @@ int Set::hash2(TElem e) const {
     return abs(prime - e % prime);
 }
 
-int Set::findPos(TElem e, Node* table, int capacity) const {
-    int pos = hash1(e);
+int Set::findPos(TElem e, const Node* table, int capacity) const {
     int i = 0;
-    while (table[pos].info != e && table[pos].info != NULL_TELEM && i < capacity) {
-        pos = (pos + i * hash2(e)) % capacity;
+    int pos = hash1(e) % capacity;
+    int offset = hash2(e) % capacity;
+    while (i < capacity && table[pos].info != NULL_TELEM && table[pos].info != e) {
         i++;
+        pos = (pos + offset) % capacity;
     }
     return pos;
 }
-
