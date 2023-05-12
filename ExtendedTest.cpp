@@ -90,7 +90,7 @@ void testAdd() {
 
 void testRemove() {
 	cout << "Test remove" << endl;
-    /*Set m;
+    Set m;
     for (int i = -100; i < 100; i++) { //delete from the emtpy set
         assert(m.remove(i) == false);
     }
@@ -149,7 +149,7 @@ void testRemove() {
         testIteratorSteps(m);
     }
     assert(m.size() == 0);
-*/
+
  }
 
 

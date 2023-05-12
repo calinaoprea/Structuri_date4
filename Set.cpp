@@ -38,6 +38,17 @@ bool Set::add(TElem e) {
 }
 
 
+int Set::findPos(TElem e, const Node* table, int capacity) const {
+    int i = 0;
+    int pos = hash1(e) % capacity;
+    int offset = hash2(e) % (capacity - 1) + 1; // ensure offset is non-zero and less than capacity
+    while (i < capacity && table[pos].info != NULL_TELEM && table[pos].info != e) {
+        i++;
+        pos = (pos + offset) % capacity;
+    }
+    return pos;
+}
+
 bool Set::remove(TElem e) {
     int pos = findPos(e, table, capacity);
     if (table[pos].info == NULL_TELEM || table[pos].deleted) {
@@ -49,6 +60,19 @@ bool Set::remove(TElem e) {
     // Check if the table needs to be rehashed
     if (_size < capacity / 4) {
         rehash();
+    }
+
+    // Find and mark any other occurrences of the element in the table
+    int i = 1;
+    int prev_pos = pos;
+    pos = (pos + i * hash2(e)) % capacity;
+    while (i < capacity && table[pos].info != NULL_TELEM) {
+        if (table[pos].info == e && !table[pos].deleted) {
+            table[pos].deleted = true;
+            _size--;
+        }
+        i++;
+        pos = (pos + i * hash2(e)) % capacity;
     }
 
     return true;
@@ -121,15 +145,4 @@ int Set::hash1(TElem e) const {
 
 int Set::hash2(TElem e) const {
     return abs(prime - e % prime);
-}
-
-int Set::findPos(TElem e, const Node* table, int capacity) const {
-    int i = 0;
-    int pos = hash1(e) % capacity;
-    int offset = hash2(e) % capacity;
-    while (i < capacity && table[pos].info != NULL_TELEM && table[pos].info != e) {
-        i++;
-        pos = (pos + offset) % capacity;
-    }
-    return pos;
 }
