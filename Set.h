@@ -25,7 +25,7 @@ class Set {
 
     int hash1(TElem e) const;
     int hash2(TElem e) const;
-    int findPos(TElem e) const;
+    int findPos(TElem e, Node* table, int capacity) const;
 
     public:
         //implicit constructor
