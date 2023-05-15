@@ -1,148 +1,154 @@
 #include "Set.h"
 #include "SetIterator.h"
-#include <cmath>
 
 Set::Set() {
-    capacity = 4;
-    _size = 0;
-    prime = 3;
-    table = new Node[capacity]();
+    //TODO - Implementation
+    this->length = 0;
+    this->all = 0;
+    this->capacity = 17;
+    this->hashTable = new TElem[17];
+    for (int i = 0; i < 17; i++)
+        this->hashTable[i] = NULL_TELEM;
+    this->MAXloadFactor = 0.75;
 }
 
-bool Set::add(TElem e) {
-    if (_size * 2 >= capacity) {
-        int oldCapacity = capacity;
-        capacity *= 2;
-        Node* newTable = new Node[capacity]();
-        for (int i = 0; i < oldCapacity; i++) {
-            if (table[i].info != NULL_TELEM && !table[i].deleted) {
-                int pos = findPos(table[i].info, newTable, capacity);
-                newTable[pos].info = table[i].info;
-            }
-        }
-        delete[] table;
-        table = newTable;
-    }
-
-    int pos = findPos(e, table, capacity);
-    if (table[pos].info == e && !table[pos].deleted) {
+bool isPrime(int x) {
+    if (x < 2 || x>2 && x % 2 == 0)
         return false;
-    }
-    if (table[pos].info != NULL_TELEM && table[pos].deleted) {
-        _size--;
-    }
-    table[pos].info = e;
-    table[pos].deleted = false;
-    _size++;
-    return true;
-}
-
-
-int Set::findPos(TElem e, const Node* table, int capacity) const {
-    int i = 0;
-    int pos = hash1(e) % capacity;
-    int offset = hash2(e) % (capacity - 1) + 1; // ensure offset is non-zero and less than capacity
-    while (i < capacity && table[pos].info != NULL_TELEM && table[pos].info != e) {
-        i++;
-        pos = (pos + offset) % capacity;
-    }
-    return pos;
-}
-
-bool Set::remove(TElem e) {
-    int pos = findPos(e, table, capacity);
-    if (table[pos].info == NULL_TELEM || table[pos].deleted) {
-        return false;
-    }
-    table[pos].deleted = true;
-    _size--; // decrement the size
-
-    // Check if the table needs to be rehashed
-    if (_size < capacity / 4) {
-        rehash();
-    }
-
-    // Find and mark any other occurrences of the element in the table
-    int i = 1;
-    int prev_pos = pos;
-    pos = (pos + i * hash2(e)) % capacity;
-    while (i < capacity && table[pos].info != NULL_TELEM) {
-        if (table[pos].info == e && !table[pos].deleted) {
-            table[pos].deleted = true;
-            _size--;
-        }
-        i++;
-        pos = (pos + i * hash2(e)) % capacity;
-    }
-
-    return true;
-}
-
-bool isPrime(int n) {
-    if (n <= 1) {
-        return false;
-    }
-    if (n <= 3) {
-        return true;
-    }
-    if (n % 2 == 0 || n % 3 == 0) {
-        return false;
-    }
-    for (int i = 5; i * i <= n; i = i + 6) {
-        if (n % i == 0 || n % (i + 2) == 0) {
+    for (int d = 3; d * d <= x; d += 2)
+        if (x % d == 0)
             return false;
-        }
-    }
     return true;
 }
 
-void Set::rehash() {
-    int new_capacity = 2 * capacity + 1;
-    while (!isPrime(new_capacity)) {
-        new_capacity += 2;
-    }
-    Node* new_table = new Node[new_capacity]; // allocate new table
-    for (int i = 0; i < new_capacity; i++) {
-        new_table[i].info = NULL_TELEM; // set all elements to null
-        new_table[i].deleted = false;
-    }
-    for (int i = 0; i < capacity; i++) { // rehash old elements
-        if (table[i].info != NULL_TELEM && !table[i].deleted) {
-            int pos = findPos(table[i].info, new_table, new_capacity);
-            new_table[pos].info = table[i].info;
-            new_table[pos].deleted = false;
+int Set::getLargestPrime(int x) {
+    x++;
+    while (!isPrime(x))
+        x++;
+    return x;
+}
+
+int Set::h1(TElem e) const {
+    return abs(e) % this->capacity;
+}
+
+int Set::h2(TElem e) const {
+    return 1 + (abs(e) % (this->capacity - 1));
+}
+
+void Set::resize() {
+    int prime = getLargestPrime(this->capacity*2);
+    int old_capacity = this->capacity;
+    this->capacity = prime;
+    TElem* newTable = new TElem[prime];
+    for (int index = 0; index < prime; index++)
+        newTable[index] = NULL_TELEM;
+    for (int index = 0; index < old_capacity; index++) {
+        if (this->hashTable[index] != NULL_TELEM) {
+            int hash1 = h1(this->hashTable[index]);
+            int hash2 = h2(this->hashTable[index]);
+            int count = 0;
+            int position = (hash1 + count * hash2) % this->capacity;
+            while (newTable[position] != NULL_TELEM) {
+                count++;
+                position = (hash1 + count * hash2) % this->capacity;
+            }
+            newTable[position] = this->hashTable[index];
         }
     }
-    capacity = new_capacity;
-    delete[] table; // deallocate old table
-    table = new_table; // update pointer
+    delete[] this->hashTable;
+    this->hashTable = newTable;
+}
+// Theta(capacity)
+
+bool Set::add(TElem elem) {
+    //TODO - Implementation
+    //if the hash is full we resize
+    double loadFacor = (double)this->all / this->capacity;
+    if (loadFacor >= this->MAXloadFactor)
+        resize();
+    int hash1 = h1(elem);
+    int hash2 = h2(elem);
+    int count = 0;
+    int position = (hash1+count*hash2)%this->capacity;
+    //if the element is already in the hash we return false
+    if (search(elem))
+        return false;
+    //otherwise we add the element
+    while (this->hashTable[position] != NULL_TELEM) {
+        count++;
+        position = (hash1 + count * hash2) % this->capacity;
+    }
+    this->hashTable[position] = elem;
+    this->length++;
+    this->all++;
+    return true;
+}
+
+
+bool Set::remove(TElem elem) {
+    //TODO - Implementation
+    int hash1 = h1(elem);
+    int hash2 = h2(elem);
+    int count = 0;
+    int position = (hash1 + count * hash2) % this->capacity;
+    int initialPosition = -1111111;
+    while (this->hashTable[position] != NULL_TELEM && count<this->capacity) {
+        if (this->hashTable[position] == elem) {
+            this->hashTable[position] = DELETED_TELEM;
+            this->length--;
+            return true;
+        }
+        if (initialPosition == -1111111)
+            initialPosition = position;
+        count++;
+        position = (hash1 + count * hash2) % this->capacity;
+    }
+    return false;
 }
 
 bool Set::search(TElem elem) const {
-    int pos = findPos(elem, table, capacity);
-    return (table[pos].info != NULL_TELEM && !table[pos].deleted && table[pos].info == elem);
+    //TODO - Implementation
+    int hash1 = h1(elem);
+    int hash2 = h2(elem);
+    int count = 0;
+    int position = (hash1 + count * hash2) % this->capacity;
+    int initialPosition = -1111111;
+    while (this->hashTable[position] != NULL_TELEM && count<this->capacity) {
+        if (this->hashTable[position] == elem) {
+            return true;
+        }
+        if (initialPosition == -1111111)
+            initialPosition = position;
+        count++;
+        position = (hash1 + count * hash2) % this->capacity;
+    }
+    return false;
 }
+
 
 int Set::size() const {
-    return _size;
+    //TODO - Implementation
+    return this->length;
 }
+// Theta(1)
+
 
 bool Set::isEmpty() const {
-    return _size == 0;
+    //TODO - Implementation
+    return (this->length == 0);
 }
+// Theta(1)
+
 
 Set::~Set() {
-    delete[] table;
+    //TODO - Implementation
+    delete[] this->hashTable;
 }
+
 
 SetIterator Set::iterator() const {
     return SetIterator(*this);
 }
+// Theta(1)
 
-int Set::hash1(TElem e) const {
-    return abs(e % capacity);
-}
-
-int Set::hash2(TElem e) const {
-    return abs(prime - e % prime);
-}

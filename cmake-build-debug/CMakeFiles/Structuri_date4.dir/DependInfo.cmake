@@ -8,11 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/fmi 1.2/structuri date/Structuri_date4/App.cpp" "CMakeFiles/Structuri_date4.dir/App.cpp.obj" "gcc" "CMakeFiles/Structuri_date4.dir/App.cpp.obj.d"
-  "D:/fmi 1.2/structuri date/Structuri_date4/ExtendedTest.cpp" "CMakeFiles/Structuri_date4.dir/ExtendedTest.cpp.obj" "gcc" "CMakeFiles/Structuri_date4.dir/ExtendedTest.cpp.obj.d"
-  "D:/fmi 1.2/structuri date/Structuri_date4/Set.cpp" "CMakeFiles/Structuri_date4.dir/Set.cpp.obj" "gcc" "CMakeFiles/Structuri_date4.dir/Set.cpp.obj.d"
-  "D:/fmi 1.2/structuri date/Structuri_date4/SetIterator.cpp" "CMakeFiles/Structuri_date4.dir/SetIterator.cpp.obj" "gcc" "CMakeFiles/Structuri_date4.dir/SetIterator.cpp.obj.d"
-  "D:/fmi 1.2/structuri date/Structuri_date4/ShortTest.cpp" "CMakeFiles/Structuri_date4.dir/ShortTest.cpp.obj" "gcc" "CMakeFiles/Structuri_date4.dir/ShortTest.cpp.obj.d"
+  "/home/calina/Desktop/facultate/DSA/Structuri_date4/App.cpp" "CMakeFiles/Structuri_date4.dir/App.cpp.o" "gcc" "CMakeFiles/Structuri_date4.dir/App.cpp.o.d"
+  "/home/calina/Desktop/facultate/DSA/Structuri_date4/ExtendedTest.cpp" "CMakeFiles/Structuri_date4.dir/ExtendedTest.cpp.o" "gcc" "CMakeFiles/Structuri_date4.dir/ExtendedTest.cpp.o.d"
+  "/home/calina/Desktop/facultate/DSA/Structuri_date4/Set.cpp" "CMakeFiles/Structuri_date4.dir/Set.cpp.o" "gcc" "CMakeFiles/Structuri_date4.dir/Set.cpp.o.d"
+  "/home/calina/Desktop/facultate/DSA/Structuri_date4/SetIterator.cpp" "CMakeFiles/Structuri_date4.dir/SetIterator.cpp.o" "gcc" "CMakeFiles/Structuri_date4.dir/SetIterator.cpp.o.d"
+  "/home/calina/Desktop/facultate/DSA/Structuri_date4/ShortTest.cpp" "CMakeFiles/Structuri_date4.dir/ShortTest.cpp.o" "gcc" "CMakeFiles/Structuri_date4.dir/ShortTest.cpp.o.d"
   )
 
 # Targets to which this target links.

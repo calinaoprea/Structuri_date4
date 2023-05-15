@@ -1,34 +1,48 @@
 #include "SetIterator.h"
 #include "Set.h"
-#include <exception>
 
-SetIterator::SetIterator(const Set& s) : set(s) {
-    currentPos = -1;
-    next();
+
+SetIterator::SetIterator(const Set& m) : set(m)
+{
+    //TODO - Implementation
+    if (set.size() == 0)
+        this->currentPosition = -1;
+    else
+        first();
 }
 
-TElem SetIterator::getCurrent() {
-    if (!valid()) {
-        throw std::exception();
-    }
-    return set.table[currentPos].info;
+
+void SetIterator::first() {
+    //TODO - Implementation
+    this->currentPosition = 0;
+    while (!valid())
+        this->currentPosition++;
 }
+
 
 void SetIterator::next() {
-    if (!valid()) {
-        throw std::exception();
+    //TODO - Implementation
+    if (valid()) {
+        this->currentPosition++;
+        while (!valid() && this->currentPosition < set.capacity)
+            this->currentPosition++;
     }
-    currentPos++;
-    while (currentPos < set.capacity && (set.table[currentPos].info == NULL_TELEM || set.table[currentPos].deleted)) {
-        currentPos++;
-    }
+    else
+        throw exception();
+}
+
+TElem SetIterator::getCurrent()
+{
+    //TODO - Implementation
+    if (valid())
+        return set.hashTable[currentPosition];
+    else
+        throw exception();
 }
 
 bool SetIterator::valid() const {
-    return currentPos < set.capacity && set.table[currentPos].info != NULL_TELEM && !set.table[currentPos].deleted;
+    //TODO - Implementation
+    return (this->currentPosition < set.capacity && set.hashTable[currentPosition] != NULL_TELEM && set.hashTable[currentPosition] != DELETED_TELEM&&this->currentPosition>=0);
 }
 
-void SetIterator::first() {
-    currentPos = -1;
-    next();
-}
+

@@ -3,28 +3,20 @@
 
 class SetIterator
 {
-	//DO NOT CHANGE THIS PART
-	friend class Set;
+    //DO NOT CHANGE THIS PART
+    friend class Set;
 private:
-	//DO NOT CHANGE THIS PART
-    struct Node {
-        TElem info;
-        bool deleted;
+    //DO NOT CHANGE THIS PART
+    const Set& set;
+    SetIterator(const Set& s);
 
-        Node() : info(NULL_TELEM), deleted(false) {}
-    };
-	const Set& set;
-	SetIterator(const Set& s);
-    Node* currentNode;
-    int currentPos;
-
-	//TODO - Representation
+    //TODO - Representation
+    int currentPosition;
 
 public:
-	void first();
-	void next();
-	TElem getCurrent();
-	bool valid() const;
+    void first();
+    void next();
+    TElem getCurrent();
+    bool valid() const;
 };
-
 
