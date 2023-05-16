@@ -1,4 +1,4 @@
-/snap/clion/235/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/calina/Desktop/facultate/DSA/Structuri_date4 -B /home/calina/Desktop/facultate/DSA/Structuri_date4/cmake-build-debug
+/snap/clion/237/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/calina/Desktop/facultate/DSA/Structuri_date4 -B /home/calina/Desktop/facultate/DSA/Structuri_date4/cmake-build-debug
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/calina/Desktop/facultate/DSA/Structuri_date4/cmake-build-debug
