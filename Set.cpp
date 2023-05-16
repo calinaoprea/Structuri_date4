@@ -1,6 +1,9 @@
 #include "Set.h"
 #include "SetIterator.h"
 
+//Best case: O(1) - constant time complexity
+//Worst case: O(1) - constant time complexity
+//Overall case: O(1) - constant time complexity
 Set::Set() {
     //TODO - Implementation
     this->length = 0;
@@ -12,6 +15,9 @@ Set::Set() {
     this->MAXloadFactor = 0.75;
 }
 
+//Best case: O(1) - constant time complexity
+//Worst case: O(sqrt(x)) - square root of x time complexity (when x is a large prime number)
+//Overall case: O(sqrt(x)) - square root of x time complexity
 bool isPrime(int x) {
     if (x < 2 || x>2 && x % 2 == 0)
         return false;
@@ -21,6 +27,9 @@ bool isPrime(int x) {
     return true;
 }
 
+//Best case: O(1) - constant time complexity
+//Worst case: O(x*sqrt(x)) - x times square root of x time complexity (when x is a large prime number)
+//Overall case: O(x*sqrt(x)) - x times square root of x time complexity
 int Set::getLargestPrime(int x) {
     x++;
     while (!isPrime(x))
@@ -28,14 +37,23 @@ int Set::getLargestPrime(int x) {
     return x;
 }
 
+//Best case: O(1) - constant time complexity
+//Worst case: O(1) - constant time complexity
+//Overall case: O(1) - constant time complexity
 int Set::h1(TElem e) const {
     return abs(e) % this->capacity;
 }
 
+//Best case: O(1) - constant time complexity
+//Worst case: O(1) - constant time complexity
+//Overall case: O(1) - constant time complexity
 int Set::h2(TElem e) const {
     return 1 + (abs(e) % (this->capacity - 1));
 }
 
+//Best case: O(capacity) - linear time complexity (when the hash table is already at maximum capacity)
+//Worst case: O(capacity^2) - quadratic time complexity (when all elements in the hash table collide and need to be rehashed to the new capacity)
+//Overall case: O(capacity^2) - quadratic time complexity
 void Set::resize() {
     int prime = getLargestPrime(this->capacity*2);
     int old_capacity = this->capacity;
@@ -61,6 +79,10 @@ void Set::resize() {
 }
 // Theta(capacity)
 
+
+//Best case: O(1) - constant time complexity (when the element is the first element in the hash table)
+//Worst case: O(capacity) - linear time complexity (when the element is the last element in the hash table)
+//Overall case: O(capacity) - linear time complexity
 bool Set::add(TElem elem) {
     //TODO - Implementation
     //if the hash is full we resize
@@ -85,7 +107,9 @@ bool Set::add(TElem elem) {
     return true;
 }
 
-
+//Best case: O(1) - constant time complexity (when the element is the first element in the hash table)
+//Worst case: O(capacity) - linear time complexity (when the element is the last element in the hash table)
+//Overall case: O(capacity) - linear time complexity
 bool Set::remove(TElem elem) {
     //TODO - Implementation
     int hash1 = h1(elem);
@@ -107,6 +131,9 @@ bool Set::remove(TElem elem) {
     return false;
 }
 
+//Best case: O(1) - constant time complexity (when the element is the first element in the hash table)
+//Worst case: O(capacity) - linear time complexity (when the element is the last element in the hash table)
+//Overall case: O(capacity) - linear time complexity
 bool Set::search(TElem elem) const {
     //TODO - Implementation
     int hash1 = h1(elem);
@@ -126,14 +153,18 @@ bool Set::search(TElem elem) const {
     return false;
 }
 
-
+//Best case: O(1)
+//Worst case: O(1)
+//Overall case: O(1)
 int Set::size() const {
     //TODO - Implementation
     return this->length;
 }
 // Theta(1)
 
-
+//Best case: O(1)
+//Worst case: O(1)
+//Overall case: O(1)
 bool Set::isEmpty() const {
     //TODO - Implementation
     return (this->length == 0);
